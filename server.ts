@@ -10,8 +10,6 @@ const app = express()
 async function refetchCalendar() {
     const weeks = relevantWeeks()
 
-    console.log(weeks)
-
     const weekEvents = await Promise.all(weeks.map(week => {
         return getEvents(week)
     }))

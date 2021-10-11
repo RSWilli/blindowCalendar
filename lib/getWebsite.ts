@@ -12,6 +12,8 @@ function getUrl(week: number) {
 export const getEvents = async (week: number) => {
     const date = dayjs().week(week + 1)
 
+    console.log(getUrl(week))
+
     const res = await fetch(getUrl(week))
 
     const text = await res.text()
@@ -28,7 +30,7 @@ export const getEvents = async (week: number) => {
                 .replace(/\s/g, "")
                 .replace(/&nbsp;/g, "")
                 .replace(/&amp;/g, "&")
-            ).filter(s => s != "")
+            ).flatMap(t => t == "" ? ["", "", ""] : [t])
         ).filter(r => r.length != 0)
 
     const events = rows.map(r => parseRow(date, r)).flat()

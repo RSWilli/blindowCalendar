@@ -8,34 +8,41 @@ export const parseTime = (timestring: string) => {
     }
 }
 
-export const dayHelper = (param: string[]) => {
-    return {
-        presenter: param[0],
-        subject: param[1],
-        room: param[2]
-    }
-}
-
 export const parseRow = (week: Dayjs, row: string[]) => {
     const [time, ...rest] = row
     const { hour, minute } = parseTime(time)
 
-    const date = week.set("hour", hour).set("minute", minute)
+    const date = week.hour(hour).minute(minute)
 
-    const days = ["mon", "tue", "wed", "thu", "fri"].map((day, i) => {
-        const d = date.set("day", i + 1)
+    const days = ["mon", "tue", "wed", "thu", "fri"].map<CalEvent | null>((day, i) => {
+        const d = date.day(i + 1)
+
+        const [presenter, subject, room] = rest.slice(i * 3, i * 3 + 3)
+
+        if (!presenter || !subject || !room) {
+            return null
+        }
 
         return {
             date: d,
             prettyDate: d.format("ddd DD.MM.YYYY HH:mm"),
             time,
-            ...dayHelper(rest.slice(i * 3, i * 3 + 3))
+            day,
+            presenter, subject, room
         }
-    }).filter(ev => {
-        return ev.presenter != undefined || ev.room != undefined || ev.subject != undefined
-    })
+    }).filter(e => e !== null)
 
-    return days
+    return days as CalEvent[]
 }
 
-export type Events = ReturnType<typeof parseRow>
+type CalEvent = {
+    date: Dayjs
+    prettyDate: string
+    time: string
+    day: string
+    presenter: string
+    subject: string
+    room: string
+}
+
+export type Events = CalEvent[]
