@@ -3,7 +3,9 @@ import { parse } from "node-html-parser"
 import { parseRow } from "./helper"
 import dayjs from "dayjs"
 import weekOfYear from 'dayjs/plugin/weekOfYear'
+import utc from 'dayjs/plugin/utc'
 dayjs.extend(weekOfYear)
+dayjs.extend(utc)
 
 function getUrl(week: number) {
     return `https://plan.blindow.de/wochen/weeks/${week}/INDEX_PH102.htm`

@@ -3,12 +3,13 @@ import ICS, { DateArray } from "ics"
 import { Events } from "./helper"
 
 function toDateArray(d: Dayjs): DateArray {
+    const u = d.utc()
     return [
-        d.year(),
-        d.month() + 1,
-        d.date(),
-        d.hour(),
-        d.minute()
+        u.year(),
+        u.month() + 1,
+        u.date(),
+        u.hour(),
+        u.minute()
     ]
 }
 
@@ -22,10 +23,10 @@ export const makeCalendar = (events: Events) => {
         location: e!.room,
         title: e!.subject,
         description: e!.presenter,
-        startInputType: 'local',
-        startOutputType: 'local',
-        endInputType: 'local',
-        endOutputType: 'local'
+        startInputType: 'utc',
+        startOutputType: 'utc',
+        endInputType: 'utc',
+        endOutputType: 'utc'
     }))
 
     // console.log(icsEvents)

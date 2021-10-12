@@ -2,6 +2,7 @@ import { getEvents } from "./lib/getWebsite"
 import { makeCalendar } from "./lib/makeCalendar"
 import { relevantWeeks } from "./lib/getRelevantWeeks"
 import express from "express"
+import { writeFile } from "fs/promises"
 
 let ics: string
 
@@ -15,6 +16,9 @@ async function refetchCalendar() {
     }))
 
     ics = makeCalendar(weekEvents.flat())
+
+
+    writeFile("calendar.ics", ics)
 }
 
 refetchCalendar()
