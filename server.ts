@@ -30,7 +30,7 @@ refetchCalendar()
 setInterval(refetchCalendar, 1000 * 60 * 30)
 
 app.get("/calendar", (req, res) => {
-    // res.contentType("text/calendar")
+    res.contentType("text/calendar")
     res.send(ics)
 })
 

@@ -4,7 +4,7 @@ import { CalEvent, Events } from "./helper"
 export const makeEvent = (event: CalEvent) => {
     return `BEGIN:VEVENT
 DTSTAMP:${dayjs().format("YYYYMMDDTHHmmss")}
-DTSTART;TZID=Europe/Berlin:${event.date.format("YYYYMMDDTHHmmss")}Z
+DTSTART;TZID=Europe/Berlin:${event.date.format("YYYYMMDDTHHmmss")}
 DURATION:PT45M
 SUMMARY:${event.subject}
 DESCRIPTION: ${event.presenter}
