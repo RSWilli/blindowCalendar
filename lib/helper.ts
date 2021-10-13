@@ -35,7 +35,7 @@ export const parseRow = (week: Dayjs, row: string[]) => {
     return days as CalEvent[]
 }
 
-type CalEvent = {
+export type CalEvent = {
     date: Dayjs
     prettyDate: string
     time: string

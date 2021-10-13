@@ -1,42 +1,25 @@
-import { Dayjs } from "dayjs"
-import ICS, { DateArray } from "ics"
-import { Events } from "./helper"
+import dayjs from "dayjs"
+import { CalEvent, Events } from "./helper"
 
-function toDateArray(d: Dayjs): DateArray {
-    const u = d.utc()
-    return [
-        u.year(),
-        u.month() + 1,
-        u.date(),
-        u.hour(),
-        u.minute()
-    ]
+export const makeEvent = (event: CalEvent) => {
+    return `BEGIN:VEVENT
+    DTSTAMP:${dayjs().format("YYYYMMDDTHHmm")}
+    DTSTART;TZID=Europe/Berlin:${event.date.format("YYYYMMDDTHHmm")}
+    DTEND;TZID=Europe/Berlin:${event.date.add(45, "minute").format("YYYYMMDDTHHmm")}
+    SUMMARY:${event.subject}
+    LOCATION:${event.room}
+    SEQUENCE:0
+    UID:${event.date.unix()}
+    END:VEVENT`
 }
-
 export const makeCalendar = (events: Events) => {
 
-    const icsEvents: ICS.EventAttributes[] = events.map(e => ({
-        // uid: `${e!.prettyDate}${e!.presenter}${e!.subject}${e!.room}`,
-        alarms: [],
-        start: toDateArray(e!.date),
-        end: toDateArray(e!.date!.add(45, "minute")),
-        location: e!.room,
-        title: e!.subject,
-        description: e!.presenter,
-        startInputType: 'utc',
-        startOutputType: 'utc',
-        endInputType: 'utc',
-        endOutputType: 'utc'
-    }))
-
-    // console.log(icsEvents)
-
-    const ics = ICS.createEvents(icsEvents)
-
-    if (!ics.value) {
-        throw ics.error
-    }
-
-
-    return ics.value
+    return `BEGIN:VCALENDAR
+    X-WR-CALDESC:Blindow
+    X-WR-TIMEZONE:Europe/Berlin
+    CALSCALE:GREGORIAN
+    VERSION:2.0
+    ${events.map(makeEvent).join("\n")}
+    END:VCALENDAR
+    `.replace(/ /g, "")
 }
