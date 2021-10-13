@@ -3,10 +3,15 @@ import { makeCalendar } from "./lib/makeCalendar"
 import { relevantWeeks } from "./lib/getRelevantWeeks"
 import express from "express"
 import { writeFile } from "fs/promises"
+import nocache from "nocache"
 
 let ics: string
 
 const app = express()
+
+app.use(nocache())
+app.set("etag", false)
+app.disable('view cache')
 
 async function refetchCalendar() {
     const weeks = relevantWeeks()
@@ -16,7 +21,6 @@ async function refetchCalendar() {
     }))
 
     ics = makeCalendar(weekEvents.flat())
-
 
     writeFile("calendar.ics", ics)
 }
