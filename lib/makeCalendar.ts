@@ -7,6 +7,7 @@ export const makeEvent = (event: CalEvent) => {
     DTSTART;TZID=Europe/Berlin:${event.date.format("YYYYMMDDTHHmmss")}
     DTEND;TZID=Europe/Berlin:${event.date.add(45, "minute").format("YYYYMMDDTHHmmss")}
     SUMMARY:${event.subject}
+    DESCRIPTION:${event.presenter}
     LOCATION:${event.room}
     SEQUENCE:0
     UID:${event.date.unix()}
