@@ -3,9 +3,9 @@ import { CalEvent, Events } from "./helper"
 
 export const makeEvent = (event: CalEvent) => {
     return `BEGIN:VEVENT
-    DTSTAMP:${dayjs().format("YYYYMMDDTHHmm")}
-    DTSTART;TZID=Europe/Berlin:${event.date.format("YYYYMMDDTHHmm")}
-    DTEND;TZID=Europe/Berlin:${event.date.add(45, "minute").format("YYYYMMDDTHHmm")}
+    DTSTAMP:${dayjs().format("YYYYMMDDTHHmmss")}
+    DTSTART;TZID=Europe/Berlin:${event.date.format("YYYYMMDDTHHmmss")}
+    DTEND;TZID=Europe/Berlin:${event.date.add(45, "minute").format("YYYYMMDDTHHmmss")}
     SUMMARY:${event.subject}
     LOCATION:${event.room}
     SEQUENCE:0

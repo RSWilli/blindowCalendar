@@ -12,7 +12,7 @@ export const parseRow = (week: Dayjs, row: string[]) => {
     const [time, ...rest] = row
     const { hour, minute } = parseTime(time)
 
-    const date = week.hour(hour).minute(minute)
+    const date = week.hour(hour).minute(minute).second(0)
 
     const days = ["mon", "tue", "wed", "thu", "fri"].map<CalEvent | null>((day, i) => {
         const d = date.day(i + 1)
