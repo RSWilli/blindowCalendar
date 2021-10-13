@@ -4,6 +4,7 @@ import { parseRow } from "./helper"
 import dayjs from "dayjs"
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import utc from 'dayjs/plugin/utc'
+import iconv from "iconv-lite"
 dayjs.extend(weekOfYear)
 dayjs.extend(utc)
 
@@ -18,7 +19,7 @@ export const getEvents = async (week: number) => {
 
     const res = await fetch(getUrl(week))
 
-    const text = await res.text()
+    const text = iconv.decode(await res.buffer(), "iso-8859-1")
 
     const html = parse(text)
 
