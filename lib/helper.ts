@@ -8,7 +8,11 @@ export const parseTime = (timestring: string) => {
     }
 }
 
-export const parseRow = (week: Dayjs, row: string[]) => {
+type RawEvent = [string, string, string] | null
+
+export type Row = [string, RawEvent, RawEvent, RawEvent, RawEvent, RawEvent]
+
+export const parseRow = (week: Dayjs, row: Row) => {
     const [time, ...rest] = row
     const { hour, minute } = parseTime(time)
 
@@ -17,11 +21,13 @@ export const parseRow = (week: Dayjs, row: string[]) => {
     const days = ["mon", "tue", "wed", "thu", "fri"].map<CalEvent | null>((day, i) => {
         const d = date.day(i + 1)
 
-        const [presenter, subject, room] = rest.slice(i * 3, i * 3 + 3)
+        const event = rest[i]
 
-        if (!presenter || !subject || !room) {
+        if (event === null) {
             return null
         }
+
+        const [presenter, subject, room] = event
 
         return {
             date: d,

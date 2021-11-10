@@ -14,10 +14,15 @@ app.set("etag", false)
 app.disable('view cache')
 
 async function refetchCalendar() {
+    console.log("refetching")
+
     const weeks = relevantWeeks()
 
     const weekEvents = await Promise.all(weeks.map(week => {
-        return getEvents(week)
+        return getEvents(week).catch(e => {
+            console.error(e)
+            return []
+        })
     }))
 
     ics = makeCalendar(weekEvents.flat())
