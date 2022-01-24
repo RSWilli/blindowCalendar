@@ -34,7 +34,8 @@ export const parseRow = (week: Dayjs, row: Row) => {
             prettyDate: d.format("ddd DD.MM.YYYY HH:mm"),
             time,
             day,
-            presenter, subject, room
+            presenter, subject,
+            room: room ?? "Remote"
         }
     }).filter(e => e !== null)
 
