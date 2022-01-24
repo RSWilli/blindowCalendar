@@ -35,7 +35,7 @@ export const parseRow = (week: Dayjs, row: Row) => {
             time,
             day,
             presenter, subject,
-            room: room ?? "Remote"
+            room: room ?? "Online"
         }
     }).filter(e => e !== null)
 
