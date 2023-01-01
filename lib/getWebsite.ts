@@ -9,7 +9,7 @@ dayjs.extend(weekOfYear)
 dayjs.extend(utc)
 
 function getUrl(week: number) {
-    return `https://plan.blindow.de/wochen/weeks/leipzig/${week}/INDEX_PH102.htm`
+    return `https://plan.blindow.de/wochen/weeks/leipzig/${week}/INDEX_PH101_102.htm`
 }
 
 export const getEvents = async (week: number) => {
