@@ -2,18 +2,20 @@ import fetch from "node-fetch"
 import { parse } from "node-html-parser"
 import { parseRow, Row } from "./helper"
 import dayjs from "dayjs"
-import weekOfYear from 'dayjs/plugin/weekOfYear'
+import isoWeek from 'dayjs/plugin/isoWeek'
 import utc from 'dayjs/plugin/utc'
 import iconv from "iconv-lite"
-dayjs.extend(weekOfYear)
+dayjs.extend(isoWeek)
 dayjs.extend(utc)
 
 function getUrl(week: number) {
-    return `https://plan.blindow.de/wochen/weeks/leipzig/${week}/INDEX_PH101_102.htm`
+    const course = process.env.CLASS ?? "INDEX_PH101_102"
+
+    return `https://plan.blindow.de/wochen/weeks/leipzig/${week}/${course}.htm`
 }
 
 export const getEvents = async (week: number) => {
-    const date = dayjs().week(week + 1)
+    const date = dayjs().isoWeek(week)
 
     console.log(dayjs().format("DD.MM.YYYY HH:mm:ss"), getUrl(week))
 
