@@ -1,7 +1,7 @@
 import fetch from "node-fetch"
 import { parse } from "node-html-parser"
-import { parseRow, Row } from "./helper"
-import dayjs from "dayjs"
+import { getRowEvents, Row } from "./helper"
+import dayjs, { Dayjs } from "dayjs"
 import isoWeek from 'dayjs/plugin/isoWeek'
 import utc from 'dayjs/plugin/utc'
 import iconv from "iconv-lite"
@@ -14,8 +14,8 @@ function getUrl(week: number) {
     return `https://plan.blindow.de/wochen/weeks/leipzig/${week}/${course}.htm`
 }
 
-export const getEvents = async (week: number) => {
-    const date = dayjs().isoWeek(week)
+export const getEvents = async (weekstart: Dayjs) => {
+    const week = weekstart.isoWeek()
 
     console.log(dayjs().format("DD.MM.YYYY HH:mm:ss"), getUrl(week))
 
@@ -55,7 +55,7 @@ export const getEvents = async (week: number) => {
             return cells
         }).filter(c => c?.length != 0 && c[0] != null)
 
-    const events = rows.map(r => parseRow(date, r as Row)).flat()
+    const events = rows.map(r => getRowEvents(weekstart, r as Row)).flat()
 
     return events
 }

@@ -12,14 +12,15 @@ type RawEvent = [string, string, string] | null
 
 export type Row = [string, RawEvent, RawEvent, RawEvent, RawEvent, RawEvent]
 
-export const parseRow = (week: Dayjs, row: Row) => {
+export const getRowEvents = (weekstart: Dayjs, row: Row) => {
     const [time, ...rest] = row
     const { hour, minute } = parseTime(time)
 
-    const date = week.hour(hour).minute(minute).second(0)
+    // weekstartTime is the dayjs date on monday at the correct start time for the row
+    const weekstartTime = weekstart.hour(hour).minute(minute).second(0)
 
-    const days = ["mon", "tue", "wed", "thu", "fri"].map<CalEvent | null>((day, i) => {
-        const d = date.day(i + 1)
+    const days = ["mon", "tue", "wed", "thu", "fri"].map<CalEvent | null>((_day, i) => {
+        const d = weekstartTime.day(i + 1)
 
         const event = rest[i]
 
@@ -33,7 +34,6 @@ export const parseRow = (week: Dayjs, row: Row) => {
             date: d,
             prettyDate: d.format("ddd DD.MM.YYYY HH:mm"),
             time,
-            day,
             presenter, subject,
             room: room ?? "Online"
         }
@@ -46,7 +46,6 @@ export type CalEvent = {
     date: Dayjs
     prettyDate: string
     time: string
-    day: string
     presenter: string
     subject: string
     room: string
