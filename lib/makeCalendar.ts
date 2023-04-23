@@ -1,20 +1,20 @@
 import dayjs from "dayjs"
-import { CalEvent, Events } from "./helper"
+import { Lesson } from "./types"
 
-export const makeEvent = (event: CalEvent) => {
+export const makeEvent = (event: Lesson) => {
     return [
         `BEGIN:VEVENT`,
         `DTSTAMP:${dayjs().format("YYYYMMDDTHHmmss")}`,
-        `DTSTART;TZID=Europe/Berlin:${event.date.format("YYYYMMDDTHHmmss")}`,
-        `DURATION:PT45M`,
-        `SUMMARY:${event.subject}`,
-        `DESCRIPTION:${event.presenter}`,
-        `LOCATION:${event.room}`,
-        `UID:blindow_${event.date.unix()}`,
+        `DTSTART;TZID=Europe/Berlin:${dayjs(event.start).format("YYYYMMDDTHHmmss")}`,
+        `DTEND;TZID=Europe/Berlin:${dayjs(event.end).format("YYYYMMDDTHHmmss")}`,
+        `SUMMARY:${event.SubjectName}`,
+        `DESCRIPTION:${event.TeacherName}`,
+        `LOCATION:${event.RoomName}`,
+        `UID:blindow_${event.Id}`,
         `END:VEVENT`
     ].join("\r\n")
 }
-export const makeCalendar = (events: Events) => {
+export const makeCalendar = (events: Lesson[]) => {
 
     return [
         `BEGIN:VCALENDAR`,

@@ -1,4 +1,4 @@
-import { getEvents } from "./lib/getWebsite"
+import { getEvents } from "./lib/getEvents"
 import { makeCalendar } from "./lib/makeCalendar"
 import { relevantWeeks } from "./lib/getRelevantWeeks"
 import express from "express"
@@ -18,14 +18,13 @@ async function refetchCalendar() {
 
     const weeks = relevantWeeks()
 
-    const weekEvents = await Promise.all(weeks.map(week => {
-        return getEvents(week).catch(e => {
-            console.error(e)
-            return []
-        })
-    }))
+    const start = weeks[0]
 
-    ics = makeCalendar(weekEvents.flat())
+    const end = weeks[weeks.length - 1].endOf("isoWeek")
+
+    const events = await getEvents(start, end)
+
+    ics = makeCalendar(events.flat())
 
     writeFile("calendar.ics", ics)
 }
