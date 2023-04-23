@@ -1,5 +1,6 @@
 import dayjs from "dayjs"
 import { Lesson } from "./types"
+import { removePrefix } from "./helper"
 
 export const makeEvent = (event: Lesson) => {
     return [
@@ -7,7 +8,7 @@ export const makeEvent = (event: Lesson) => {
         `DTSTAMP:${dayjs().format("YYYYMMDDTHHmmss")}`,
         `DTSTART;TZID=Europe/Berlin:${dayjs(event.start).format("YYYYMMDDTHHmmss")}`,
         `DTEND;TZID=Europe/Berlin:${dayjs(event.end).format("YYYYMMDDTHHmmss")}`,
-        `SUMMARY:${event.SubjectName}`,
+        `SUMMARY:${removePrefix(event.SubjectName, "Methodische Anwendung der Physiotherapie im Fachbereich ")}`,
         `DESCRIPTION:${event.TeacherName}`,
         `LOCATION:${event.RoomName}`,
         `UID:blindow_${event.Id}`,
