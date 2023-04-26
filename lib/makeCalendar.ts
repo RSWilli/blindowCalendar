@@ -1,14 +1,15 @@
 import dayjs from "dayjs"
 import { Lesson } from "./types"
-import { removePrefix } from "./helper"
+
+const format = "YYYYMMDDTHHmmss"
 
 export const makeEvent = (event: Lesson) => {
     return [
         `BEGIN:VEVENT`,
-        `DTSTAMP:${dayjs().format("YYYYMMDDTHHmmss")}`,
-        `DTSTART;TZID=Europe/Berlin:${dayjs(event.start).format("YYYYMMDDTHHmmss")}`,
-        `DTEND;TZID=Europe/Berlin:${dayjs(event.end).format("YYYYMMDDTHHmmss")}`,
-        `SUMMARY:${removePrefix(event.SubjectName, "Methodische Anwendung der Physiotherapie im Fachbereich ")}`,
+        `DTSTAMP:${dayjs().format(format)}Z`,
+        `DTSTART:${dayjs(event.start).utc(false).format(format)}Z`,
+        `DTEND:${dayjs(event.end).utc(false).format(format)}Z`,
+        `SUMMARY:${event.SubjectName.replace("Methodische Anwendung der Physiotherapie im Fachbereich ", "Meth. Anw. der Phys. im FB ")}`,
         `DESCRIPTION:${event.TeacherName}`,
         `LOCATION:${event.RoomName}`,
         `UID:blindow_${event.Id}`,
@@ -21,29 +22,11 @@ export const makeCalendar = (events: Lesson[]) => {
         `BEGIN:VCALENDAR`,
         `X-WR-CALDESC:blindow`,
         `X-WR-CALNAME:blindow`,
-        `X-WR-TIMEZONE:Europe/Berlin`,
         `CALSCALE:GREGORIAN`,
         `PRODID:blindow-parser`,
+        `METHOD: PUBLISH`,
         `VERSION:2.0`,
         `${events.map(makeEvent).join("\r\n")}`,
-        `BEGIN:VTIMEZONE`,
-        `TZID:Europe/Berlin`,
-        `BEGIN:STANDARD`,
-        `DTSTART:19701025T030000`,
-        `RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU`,
-        `TZNAME:CET`,
-        `TZOFFSETFROM:+0200`,
-        `TZOFFSETTO:+0100`,
-        `END:STANDARD`,
-        `BEGIN:DAYLIGHT`,
-        `DTSTART:19700329T020000`,
-        `RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU`,
-        `TZNAME:CEST`,
-        `TZOFFSETFROM:+0100`,
-        `TZOFFSETTO:+0200`,
-        `END:DAYLIGHT`,
-        `END:VTIMEZONE`,
         `END:VCALENDAR`
     ].join("\r\n")
-
 }
