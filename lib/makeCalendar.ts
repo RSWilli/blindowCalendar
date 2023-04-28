@@ -9,7 +9,7 @@ export const makeEvent = (event: Lesson) => {
         `DTSTAMP:${dayjs().format(format)}Z`,
         `DTSTART:${dayjs(event.start).utc(false).format(format)}Z`,
         `DTEND:${dayjs(event.end).utc(false).format(format)}Z`,
-        `SUMMARY:${event.SubjectName.replace("Methodische Anwendung der Physiotherapie im Fachbereich ", "Meth. Anw. der Phys. im FB ")}`,
+        `SUMMARY:${event.SubjectName.replace("Methodische Anwendung der Physiotherapie im Fachbereich", "PT")}`,
         `DESCRIPTION:${event.TeacherName}`,
         `LOCATION:${event.RoomName}`,
         `UID:blindow_${event.Id}`,
